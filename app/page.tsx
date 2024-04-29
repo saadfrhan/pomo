@@ -1,15 +1,13 @@
 import Timer from "@/components/timer";
 
-export default function Home({
-  searchParams: { minutes = 25, seconds = 0, breakMinutes = 5 },
-}: {
-  searchParams: {
-    minutes: number;
-    seconds: number;
-    breakMinutes: number;
-  };
-}) {
+export default function Home() {
   return (
-    <Timer minutes={minutes} seconds={seconds} breakMinutes={breakMinutes} />
+    <Timer
+      longBreakInterval={4}
+      longBreakMinutes={15}
+      minutes={25}
+      seconds={0}
+      shortBreakMinutes={5}
+    />
   );
 }
