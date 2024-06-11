@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import { Icon } from "@iconify/react";
 import StatusBadge from "./status-badge";
 import { cn } from "@/lib/utils";
 import { SettingsMenu } from "./settings-menu";
+import { Helmet } from "react-helmet-async";
 
 export default function Timer({
   minutes: _minutes = 25,
@@ -76,6 +75,11 @@ export default function Timer({
         "flex flex-col items-center justify-center h-screen gap-y-4"
       )}
     >
+      <Helmet>
+        <title>
+          {pad(minutes)}:{pad(seconds)} - {status}
+        </title>
+      </Helmet>
       <StatusBadge status={status} lap={intervals + 1} />
       <h1
         className={cn(
