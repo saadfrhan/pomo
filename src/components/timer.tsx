@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
-import Link from "next/link";
 import { Icon } from "@iconify/react";
 import StatusBadge from "./status-badge";
 import { cn } from "@/lib/utils";
+import { SettingsMenu } from "./settings-menu";
 
 export default function Timer({
   minutes: _minutes = 25,
@@ -38,8 +38,9 @@ export default function Timer({
           if (shortBreakMinutes === 0) {
             return;
           }
-          setIntervals((prev) => prev + 1);
-          if (intervals % longBreakInterval === 0) {
+          const newIntervals = intervals + 1;
+          setIntervals(newIntervals);
+          if (newIntervals % longBreakInterval === 0) {
             setMinutes(longBreakMinutes);
             setSeconds(0);
             setStatus("longBreak");
@@ -75,7 +76,7 @@ export default function Timer({
         "flex flex-col items-center justify-center h-screen gap-y-4"
       )}
     >
-      <StatusBadge status={status} />
+      <StatusBadge status={status} lap={intervals + 1} />
       <h1
         className={cn(
           "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl"
@@ -85,17 +86,7 @@ export default function Timer({
         <p className="text-9xl leading-[0.8]">{pad(seconds)}</p>
       </h1>
       <div className="flex gap-3 items-center">
-        <Link
-          href="/settings"
-          className={buttonVariants({
-            size: "icon",
-            className: cn(
-              "w-12 h-12 rounded-xl transition-colors duration-300"
-            ),
-          })}
-        >
-          <Icon icon="bi:three-dots" className="w-4 h-4" />
-        </Link>
+        <SettingsMenu />
         <Button
           onClick={() => setStop(!stop)}
           size="icon"
@@ -112,19 +103,20 @@ export default function Timer({
           className={cn("w-12 h-12 rounded-xl transition-colors duration-300")}
           onClick={() => {
             if (status === "longBreak") {
-              // reset to focus
               setMinutes(_minutes);
               setSeconds(0);
               setStatus("focus");
-            } else if (intervals === longBreakInterval) {
+            } else if (status === "focus" && (intervals + 1) % 4 === 0) {
+              // Check if it's the 4th focus session
               setMinutes(longBreakMinutes);
               setSeconds(0);
               setStatus("longBreak");
+              setIntervals((prev) => prev + 1); // Increment intervals here
             } else if (status === "focus") {
               setMinutes(shortBreakMinutes);
               setSeconds(0);
               setStatus("shortBreak");
-              setIntervals((prev) => prev + 1);
+              setIntervals((prev) => prev + 1); // Increment intervals here
             } else {
               setMinutes(_minutes);
               setSeconds(0);

@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react";
 import { Badge } from "./ui/badge";
 
-export default function StatusBadge({ status }: { status: string }) {
+export default function StatusBadge({ status, lap = 1 }: { status: string, lap: number }) {
   if (status === "focus") {
-    return focus;
+    return focus(lap);
   }
   if (status === "shortBreak") {
     return shortBreak;
@@ -14,10 +14,10 @@ export default function StatusBadge({ status }: { status: string }) {
   return null;
 }
 
-const focus = (
+const focus = (lap = 1) => (
   <Badge variant="outline" className="flex gap-1 items-center text-base">
     <Icon icon="ph:brain" className="w-5 h-5" />
-    Focus
+    Focus (Lap {lap})
   </Badge>
 );
 

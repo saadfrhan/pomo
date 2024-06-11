@@ -1,6 +1,6 @@
 import Timer from "@/components/timer";
 
-export default function Home() {
+export default function App() {
   return (
     <Timer
       longBreakInterval={4}
