@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "usehooks-ts";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
