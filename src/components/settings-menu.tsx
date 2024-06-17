@@ -42,7 +42,7 @@ function SettingsForm() {
   const [longBreak, setLongBreak] = React.useState(longBreakMinutes);
   const [longBreakIntervl, setLongBreakIntervl] = React.useState(longBreakInterval);
   return (
-    <div className="space-y-3 py-2 overflow-auto h-[110vh]">
+    <div className="space-y-3 py-2 h-full">
             <div className="space-y-2">
               <CardHeader className="md:p-0 p-3">
                 <CardTitle>Session Length</CardTitle>
@@ -135,19 +135,19 @@ export function SettingsMenu() {
       <Icon icon="bi:three-dots" className="w-4 h-4" />
     </Button>
   </DrawerTrigger>
-  <DrawerContent className="h-full">
-    <X className="w-6 h-6 absolute top-3 right-3 cursor-pointer" onClick={() => setOpen(false)} />
-    <div>
+  <DrawerContent>
+    <div className="h-dvh overflow-auto flex flex-col">
+    <X className="w-6 h-6 absolute top-10 right-5 cursor-pointer" onClick={() => setOpen(false)} />
       <DrawerHeader className="text-left">
         <DrawerTitle className="text-center">Preferences</DrawerTitle>
       </DrawerHeader>
       <SettingsForm />
-    </div>
-    <DrawerFooter className="pt-0 mt-0">
+    <DrawerFooter>
       <DrawerClose asChild>
         <Button variant="outline">Cancel</Button>
       </DrawerClose>
     </DrawerFooter>
+    </div>
   </DrawerContent>
 </Drawer>
   );
