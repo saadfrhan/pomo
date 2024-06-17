@@ -2,11 +2,33 @@ import { useTheme } from "@/components/theme-provider";
 import { Switch } from "./ui/switch";
 import { useTimer } from "@/store";
 import { useMediaQuery } from "usehooks-ts";
+import { Checkbox } from "./ui/checkbox";
 
 export default function OtherSettings() {
   const { setTheme, theme } = useTheme();
-  const {playTick,isPlayTick,focusMode,isFocusMode, fullscreen, isFullscreen, showProgressbar, isShowProgressbar} = useTimer((state) => state);
+  const {playTick,isPlayTick,focusMode,isFocusMode, showProgressbar, isShowProgressbar, isFullscreen} = useTimer((state) => state);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  // is user presses f11
+
+
+
+  const handleEnterFullscreen = () => {
+    const element = document.documentElement;
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+      isFullscreen(true);
+    } else {
+      console.log('An error occurred');
+    }
+  };
+
+  const handleExitFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      isFullscreen(false);
+    }
+  };
 
   return (
     <div>
@@ -44,30 +66,18 @@ export default function OtherSettings() {
       </div>
       {isDesktop && <div className="flex justify-between mt-3 w-full p-3 items-center md:rounded-lg border max-md:space-y-1.5">
       <p>Fullscreen</p>
-      <Switch
+      <Checkbox
         className="cursor-pointer"
-        checked={fullscreen}
-        onCheckedChange={() => {
-          isFullscreen(!fullscreen);
-          if (!fullscreen) {
-            requestFullScreen(document.documentElement);
-          } else {
-            document.exitFullscreen();
-          }
-
-        }}
+        checked={
+          document.fullscreenElement !== null
+        }
+        onCheckedChange={
+          document.fullscreenElement !== null
+            ? handleExitFullscreen
+            : handleEnterFullscreen
+        }
       />
       </div>}
     </div>
   );
-}
-
-
-function requestFullScreen(element: HTMLElement) {
-  // Supports most browsers and their versions.
-  const requestMethod = element.requestFullscreen;
-
-  if (requestMethod) { // Native full screen.
-      requestMethod.call(element);
-  }
 }

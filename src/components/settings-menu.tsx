@@ -136,7 +136,7 @@ export function SettingsMenu() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="h-dvh overflow-auto flex flex-col">
+        <div className="h-screen overflow-auto flex flex-col">
 
           <DrawerHeader className="text-left flex w-full justify-between">
             <DrawerTitle className="text-center">Preferences</DrawerTitle>
@@ -149,9 +149,9 @@ export function SettingsMenu() {
           </Button>
           </DrawerHeader>
           <SettingsForm />
-          <DrawerFooter>
+          <DrawerFooter className="px-1 pb-1 pt-5">
             <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="ghost">Close</Button>
             </DrawerClose>
           </DrawerFooter>
         </div>
