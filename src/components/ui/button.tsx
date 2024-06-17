@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -24,6 +25,7 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        "icon-sm": "h-8 w-8",
       },
     },
     defaultVariants: {
@@ -37,11 +39,20 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  playSound?: boolean; // Custom prop to control sound
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, playSound = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+
+    useEffect(() => {
+      if (playSound) {
+        const audio = new Audio("/path/to/sound.mp3"); // Replace with your sound file path
+        audio.play();
+      }
+    }, [playSound]);
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}

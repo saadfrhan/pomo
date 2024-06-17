@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -15,24 +14,101 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
 import { Icon } from "@iconify/react";
+import { useTimer } from "@/store";
+import { Minus, Plus } from "lucide-react";
+import { CardDescription, CardHeader, CardTitle } from "./ui/card";
+import OtherSettings from "./other-settings";
+import { Input } from "./ui/input";
+
+function SettingsForm() {
+  const {
+    adjustFocusMinutes,
+    adjustLongBreakInterval,
+    adjustLongBreakMinutes,
+    adjustShortBreakMinutes,
+    focusMinutes,
+    longBreakInterval,
+    longBreakMinutes,
+    shortBreakMinutes,
+  } = useTimer((state) => state);
+  const [focus, setFocus] = React.useState(focusMinutes);
+  const [shortBreak, setShortBreak] = React.useState(shortBreakMinutes);
+  const [longBreak, setLongBreak] = React.useState(longBreakMinutes);
+  const [longBreakIntervl, setLongBreakIntervl] = React.useState(longBreakInterval);
+  return (
+    <div className="space-y-3 py-2">
+            <div className="space-y-2">
+              <CardHeader className="p-0">
+                <CardTitle>Session Length</CardTitle>
+                <CardDescription>
+                  The length of each session type in minutes. Changes apply to
+                  the next session of each type.
+                </CardDescription>
+              </CardHeader>
+              <div className="md:space-y-4">
+                <div>
+                  <SettingsInput
+                    label="Focus Length"
+                    max={60}
+                    className=" max-md:rounded-none rounded-t-lg border-t border"
+                    id="focus"
+                    defaultValue={focusMinutes}
+                    onChange={(val) => {
+                      setFocus(val);
+                      adjustFocusMinutes(focus);
+                    }}
+                  />
+                  <SettingsInput
+                    label="Short Break Length"
+                    max={15}
+                    className=" max-md:rounded-none border-x border-b"
+                    id="short-break"
+                    defaultValue={shortBreakMinutes}
+                    onChange={(val) => {
+                      setShortBreak(val);
+                      adjustShortBreakMinutes(shortBreak);
+                    }}
+                  />
+                  <SettingsInput
+                    label="Long Break Length"
+                    max={60}
+                    className=" max-md:rounded-none rounded-b-lg border-x border-b"
+                    id="long-break"
+                    defaultValue={longBreakMinutes}
+                    onChange={(val) => {
+                      setLongBreak(val);
+                      adjustLongBreakMinutes(longBreak);
+                    }}
+                  />
+                </div>
+                <SettingsInput
+                  label="Sessions Until Long Break"
+                  max={8}
+                  className="max-md:rounded-none border rounded-md"
+                  id="long-break-interval"
+                  defaultValue={longBreakInterval}
+                  onChange={(val) => {
+                    setLongBreakIntervl(val);
+                    adjustLongBreakInterval(longBreakIntervl);
+                  }}
+                />
+                <OtherSettings />
+              </div>
+            </div>
+          </div>
+  )
+}
 
 export function SettingsMenu() {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  // ! TODO - Implement the settings menu
-  // ! The settings menu should have the following features:
-  // Adjust lap length
-  // Adjust short and long break length and long break interval
-  // Adjust theme
 
   if (isDesktop) {
     return (
@@ -42,14 +118,11 @@ export function SettingsMenu() {
             <Icon icon="bi:three-dots" className="w-4 h-4" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[575px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
-            </DialogDescription>
+            <DialogTitle className="text-center">Preferences</DialogTitle>
           </DialogHeader>
-          <ProfileForm />
+          <SettingsForm />
         </DialogContent>
       </Dialog>
     );
@@ -64,12 +137,9 @@ export function SettingsMenu() {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit profile</DrawerTitle>
-          <DrawerDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DrawerDescription>
+          <DrawerTitle className="text-center">Preferences</DrawerTitle>
         </DrawerHeader>
-        <ProfileForm className="px-4" />
+        <SettingsForm />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -80,18 +150,55 @@ export function SettingsMenu() {
   );
 }
 
-function ProfileForm({ className }: React.ComponentProps<"form">) {
+function SettingsInput({
+  label,
+  id,
+  defaultValue,
+  onChange,
+  className,
+  max,
+}: {
+  label: string;
+  id: string;
+  defaultValue: number;
+  onChange: (val: number) => void;
+  className?: string;
+  max: number;
+}) {
   return (
-    <form className={cn("grid items-start gap-4", className)}>
-      <div className="grid gap-2">
-        <label htmlFor="email">Email</label>
-        <Input type="email" id="email" defaultValue="shadcn@example.com" />
+    <div className={cn("flex justify-between items-center w-full p-3 max-md:flex-col max-md:space-y-1.5", className)}>
+      <label htmlFor={id}>{label}</label>
+      <div className="flex max-md:w-full">
+        <Input
+          max={max}
+          className="h-8 text-base max-md:w-full border-border w-max rounded-r-none"
+          id={id}
+          value={defaultValue}
+          onChange={(e) => {
+            onChange(Number(e.target.value));
+          }}
+        />
+        <Button
+          size="icon-sm"
+          className="rounded-none"
+          disabled = {defaultValue >= max}
+          onClick={() => {
+            onChange(defaultValue + 1);
+          }}
+        >
+          <Plus className="w-4 h-4" />
+        </Button>
+        <Button
+          size="icon-sm"
+          className="rounded-l-none"
+          disabled={defaultValue <= 1}
+          onClick={() => {
+            onChange(defaultValue - 1);
+          }}
+        >
+          <Minus className="w-4 h-4" />
+        </Button>
       </div>
-      <div className="grid gap-2">
-        <label htmlFor="username">Username</label>
-        <Input id="username" defaultValue="@shadcn" />
-      </div>
-      <Button type="submit">Save changes</Button>
-    </form>
+    </div>
   );
 }

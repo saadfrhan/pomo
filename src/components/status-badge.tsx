@@ -15,16 +15,16 @@ export default function StatusBadge({ status, lap = 1 }: { status: string, lap: 
 }
 
 const focus = (lap = 1) => (
-  <Badge variant="outline" className="flex gap-1 items-center text-base">
+  <Badge variant="outline" className="flex gap-1 items-center text-base w-fit">
     <Icon icon="ph:brain" className="w-5 h-5" />
-    Focus (Lap {lap})
+    Focus #{lap}
   </Badge>
 );
 
 const shortBreak = (
   <Badge
     variant="outline"
-    className="flex gap-1 items-center text-base
+    className="flex gap-1 items-center text-base w-fit
 	"
   >
     <Icon icon="ph:coffee" className="w-5 h-5" />
@@ -35,7 +35,7 @@ const shortBreak = (
 const longBreak = (
   <Badge
     variant="outline"
-    className="flex gap-1 items-center text-base
+    className="flex gap-1 items-center text-base w-fit
 	"
   >
     <Icon icon="ph:coffee" className="w-5 h-5" />

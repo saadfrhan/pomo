@@ -1,27 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Icon } from "@iconify/react";
 import StatusBadge from "./status-badge";
 import { cn } from "@/lib/utils";
 import { SettingsMenu } from "./settings-menu";
 import { Helmet } from "react-helmet-async";
+import { RotateCcwIcon } from "lucide-react";
+import { useTimer } from "@/store";
+import tickSound from './tick.mp3'
+import startSound from './start.mp3'
+import { useMediaQuery } from "usehooks-ts";
 
-export default function Timer({
-  minutes: _minutes = 25,
-  seconds: _seconds = 0,
-  shortBreakMinutes = 5,
-  longBreakMinutes = 15,
-  longBreakInterval = 4,
-}: {
-  minutes: number;
-  seconds: number;
-  shortBreakMinutes: number;
-  longBreakMinutes: number;
-  longBreakInterval: number;
-}) {
-  const [minutes, setMinutes] = useState(_minutes);
-  const [seconds, setSeconds] = useState(_seconds);
-  // intervals completed
+export default function Timer() {
+  const {
+    focusMinutes,
+    longBreakInterval,
+    longBreakMinutes,
+    shortBreakMinutes,
+    playTick,
+    focusMode,
+    fullscreen
+  } = useTimer((state) => state);
+
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const [mouseMoved, setMouseMoved] = useState(false);
+
+useEffect(() => {
+  if (fullscreen && isDesktop) {
+    const timer = setTimeout(() => setMouseMoved(false), 2000);
+    return () => clearTimeout(timer);
+  }
+}, [mouseMoved, fullscreen, isDesktop]);
+
+  const [minutes, setMinutes] = useState(focusMinutes);
+  const [seconds, setSeconds] = useState(0);
   const [intervals, setIntervals] = useState(0);
   const [stop, setStop] = useState(true);
   const [status, setStatus] = useState("focus");
@@ -31,6 +44,9 @@ export default function Timer({
       if (stop) {
         clearInterval(intervalId);
         return;
+      }
+      if (playTick && status === "focus") {
+        tickAudioRef.current.play();
       }
       if (seconds === 0) {
         if (minutes === 0) {
@@ -69,30 +85,59 @@ export default function Timer({
     longBreakMinutes,
   ]);
 
+  function handleReset() {
+    setMinutes(focusMinutes);
+    setSeconds(0);
+    setStatus("focus");
+    setIntervals(0);
+    setStop(true);
+  }
+
+  const tickAudio = new Audio(tickSound);
+  const startAudio = new Audio(startSound);
+  const tickAudioRef = useRef(tickAudio);
+
   return (
     <div
-      className={cn(
-        "flex flex-col items-center justify-center h-screen gap-y-4"
-      )}
-    >
+    onMouseMove={() => setMouseMoved(true)}
+    className={cn({
+      'bg-[#000]': focusMode && !stop
+    })}
+  >
       <Helmet>
         <title>
-          {pad(minutes)}:{pad(seconds)} - {status}
+          {pad(minutes)}:{pad(seconds)} - {
+            status === "focus"
+              ? "Time to focus!"
+              : "Time for a break!"
+          }
         </title>
       </Helmet>
+      {/* progress bar of timer from start till end */}
+      <div className="flex flex-col justify-center w-full max-w-xl mx-auto h-dvh gap-y-4">
+      <div className="relative w-full h-1 bg-secondary rounded-full mb-6">
+        <div
+          className="absolute top-0 left-0 h-full bg-foreground rounded-full"
+          style={{
+            width: `${((focusMinutes * 60 - minutes * 60 - seconds) /
+              (focusMinutes * 60)) *
+              100}%`,
+          }}
+        ></div>
+      </div>
+      <div className="flex flex-col justify-center items-center gap-y-4">
       <StatusBadge status={status} lap={intervals + 1} />
-      <h1
-        className={cn(
-          "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl"
-        )}
-      >
-        <p className="text-9xl leading-[0.8]">{pad(minutes)}</p>
-        <p className="text-9xl leading-[0.8]">{pad(seconds)}</p>
-      </h1>
-      <div className="flex gap-3 items-center">
-        <SettingsMenu />
+      <div className="font-extrabold flex flex-col items-center justify-center">
+        <p className="text-[16rem] leading-[0.8]">{pad(minutes)}</p>
+        <p className="text-[16rem] leading-[0.8]">{pad(seconds)}</p>
+      </div>
+      <div className="flex gap-3 items-center" style={{ display: (fullscreen && isDesktop && !mouseMoved && !stop) ? 'none' : 'flex' }}>
+        {(!focusMode || focusMode && stop ) && <SettingsMenu />}
         <Button
-          onClick={() => setStop(!stop)}
+          onClick={() => {
+            startAudio.play();
+            setStop(!stop);
+          }}
           size="icon"
           className={cn("w-20 h-16 rounded-3xl transition-colors duration-300")}
         >
@@ -107,11 +152,13 @@ export default function Timer({
           className={cn("w-12 h-12 rounded-xl transition-colors duration-300")}
           onClick={() => {
             if (status === "longBreak") {
-              setMinutes(_minutes);
+              setMinutes(focusMinutes);
               setSeconds(0);
               setStatus("focus");
-            } else if (status === "focus" && (intervals + 1) % 4 === 0) {
-              // Check if it's the 4th focus session
+            } else if (
+              status === "focus" &&
+              (intervals + 1) % longBreakInterval === 0
+            ) {
               setMinutes(longBreakMinutes);
               setSeconds(0);
               setStatus("longBreak");
@@ -122,7 +169,7 @@ export default function Timer({
               setStatus("shortBreak");
               setIntervals((prev) => prev + 1); // Increment intervals here
             } else {
-              setMinutes(_minutes);
+              setMinutes(focusMinutes);
               setSeconds(0);
               setStatus("focus");
             }
@@ -130,6 +177,18 @@ export default function Timer({
         >
           <Icon icon="bi:fast-forward-fill" className="w-4 h-4" />
         </Button>
+        {(!focusMode || focusMode && stop ) && <Button
+          size="icon"
+          className={cn("w-12 h-12 rounded-xl transition-colors duration-300")}
+          onClick={handleReset}
+        >
+          <RotateCcwIcon className="w-4 h-4" />
+        </Button>
+
+
+        }
+      </div>
+      </div>
       </div>
     </div>
   );
