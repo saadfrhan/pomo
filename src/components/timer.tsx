@@ -100,7 +100,7 @@ useEffect(() => {
   return (
     <div
     onMouseMove={() => setMouseMoved(true)}
-    className={cn({
+    className={cn("h-dvh", {
       'bg-[#000]': focusMode && !stop
     })}
   >
@@ -114,8 +114,8 @@ useEffect(() => {
         </title>
       </Helmet>
       {/* progress bar of timer from start till end */}
-      <div className="flex flex-col justify-center w-full max-w-xl mx-auto h-dvh gap-y-4">
-      <div className="relative w-full h-1 bg-secondary rounded-full mb-6">
+      <div className="flex flex-col w-full max-w-xl mx-auto gap-y-4">
+      <div className="relative w-full h-1 bg-secondary rounded-full md:mb-6">
         <div
           className="absolute top-0 left-0 h-full bg-foreground rounded-full"
           style={{
@@ -125,7 +125,7 @@ useEffect(() => {
           }}
         ></div>
       </div>
-      <div className="flex flex-col justify-center items-center gap-y-4">
+      <div className="flex flex-col justify-center items-center h-[94dvh] gap-y-4">
       <StatusBadge status={status} lap={intervals + 1} />
       <div className="font-extrabold flex flex-col items-center justify-center">
         <p className="text-[16rem] leading-[0.8]">{pad(minutes)}</p>

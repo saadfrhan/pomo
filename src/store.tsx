@@ -8,6 +8,7 @@ interface TimerState {
   playTick: boolean;
   focusMode: boolean;
   fullscreen: boolean;
+  showProgressbar: boolean;
   adjustFocusMinutes: (minutes: number) => void;
   adjustShortBreakMinutes: (minutes: number) => void;
   adjustLongBreakMinutes: (minutes: number) => void;
@@ -15,9 +16,12 @@ interface TimerState {
   isPlayTick: (playTick: boolean) => void;
   isFocusMode: (focusMode: boolean) => void;
   isFullscreen: (fullscreen: boolean) => void;
+  isShowProgressbar: (showProgressbar: boolean) => void;
+
 }
 
 export const useTimer = create<TimerState>((set) => ({
+  showProgressbar: true,
   focusMinutes: 25,
   shortBreakMinutes: 5,
   longBreakMinutes: 15,
@@ -32,4 +36,5 @@ export const useTimer = create<TimerState>((set) => ({
   isPlayTick: (playTick: boolean) => set({playTick}),
   isFocusMode: (focusMode: boolean) => set({focusMode}),
   isFullscreen: (fullscreen: boolean) => set({fullscreen}),
+  isShowProgressbar: (showProgressbar: boolean) => set({showProgressbar}),
 }));

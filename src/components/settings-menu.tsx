@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/drawer";
 import { Icon } from "@iconify/react";
 import { useTimer } from "@/store";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 import { CardDescription, CardHeader, CardTitle } from "./ui/card";
 import OtherSettings from "./other-settings";
 import { Input } from "./ui/input";
@@ -42,9 +42,9 @@ function SettingsForm() {
   const [longBreak, setLongBreak] = React.useState(longBreakMinutes);
   const [longBreakIntervl, setLongBreakIntervl] = React.useState(longBreakInterval);
   return (
-    <div className="space-y-3 py-2">
+    <div className="space-y-3 py-2 overflow-auto h-[110vh]">
             <div className="space-y-2">
-              <CardHeader className="p-0">
+              <CardHeader className="md:p-0 p-3">
                 <CardTitle>Session Length</CardTitle>
                 <CardDescription>
                   The length of each session type in minutes. Changes apply to
@@ -90,7 +90,7 @@ function SettingsForm() {
                 <SettingsInput
                   label="Sessions Until Long Break"
                   max={8}
-                  className="max-md:rounded-none border rounded-md"
+                  className="max-md:rounded-none border-x border-b rounded-md"
                   id="long-break-interval"
                   defaultValue={longBreakInterval}
                   onChange={(val) => {
@@ -130,23 +130,26 @@ export function SettingsMenu() {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button className="w-12 h-12 rounded-xl transition-colors duration-300">
-          <Icon icon="bi:three-dots" className="w-4 h-4" />
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle className="text-center">Preferences</DrawerTitle>
-        </DrawerHeader>
-        <SettingsForm />
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+  <DrawerTrigger asChild>
+    <Button className="w-12 h-12 rounded-xl transition-colors duration-300">
+      <Icon icon="bi:three-dots" className="w-4 h-4" />
+    </Button>
+  </DrawerTrigger>
+  <DrawerContent className="h-full">
+    <X className="w-6 h-6 absolute top-3 right-3 cursor-pointer" onClick={() => setOpen(false)} />
+    <div>
+      <DrawerHeader className="text-left">
+        <DrawerTitle className="text-center">Preferences</DrawerTitle>
+      </DrawerHeader>
+      <SettingsForm />
+    </div>
+    <DrawerFooter className="pt-0 mt-0">
+      <DrawerClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
   );
 }
 
@@ -166,7 +169,7 @@ function SettingsInput({
   max: number;
 }) {
   return (
-    <div className={cn("flex justify-between items-center w-full p-3 max-md:flex-col max-md:space-y-1.5", className)}>
+    <div className={cn("flex md:justify-between justify-center md:items-center w-full p-3 max-md:flex-col max-md:space-y-1.5", className)}>
       <label htmlFor={id}>{label}</label>
       <div className="flex max-md:w-full">
         <Input

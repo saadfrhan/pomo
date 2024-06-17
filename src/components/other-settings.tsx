@@ -5,12 +5,12 @@ import { useMediaQuery } from "usehooks-ts";
 
 export default function OtherSettings() {
   const { setTheme, theme } = useTheme();
-  const {playTick,isPlayTick,focusMode,isFocusMode, fullscreen, isFullscreen} = useTimer((state) => state);
+  const {playTick,isPlayTick,focusMode,isFocusMode, fullscreen, isFullscreen, showProgressbar, isShowProgressbar} = useTimer((state) => state);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
     <div>
-      <div className="flex justify-between  w-full p-3 items-center rounded-t-lg border max-md:flex-col max-md:space-y-1.5">
+      <div className="flex justify-between  w-full p-3 items-center md:rounded-t-lg border-b border-x max-md:space-y-1.5">
       <p>Dark mode</p>
       <Switch
         className="cursor-pointer"
@@ -18,7 +18,7 @@ export default function OtherSettings() {
         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
       />
     </div>
-    <div className="flex justify-between  w-full p-3 items-center border-b border-x max-md:flex-col max-md:space-y-1.5">
+    <div className="flex justify-between  w-full p-3 items-center border-b border-x max-md:space-y-1.5">
       <p>Play ticking sound</p>
       <Switch
         className="cursor-pointer"
@@ -26,7 +26,15 @@ export default function OtherSettings() {
         onCheckedChange={() => isPlayTick(!playTick)}
       />
     </div>
-    <div className="flex justify-between  w-full p-3 items-center rounded-b-lg border-x border-b max-md:flex-col max-md:space-y-1.5">
+    <div className="flex justify-between  w-full p-3 items-center border-b border-x max-md:space-y-1.5">
+      <p>Show progressbar</p>
+      <Switch
+        className="cursor-pointer"
+        checked={showProgressbar}
+        onCheckedChange={() => isShowProgressbar(!showProgressbar)}
+      />
+    </div>
+    <div className="flex justify-between  w-full p-3 items-center md:rounded-b-lg border-x border-b max-md:space-y-1.5">
       <p>Focus mode</p>
       <Switch
         className="cursor-pointer"
@@ -34,7 +42,7 @@ export default function OtherSettings() {
         onCheckedChange={() => isFocusMode(!focusMode)}
       />
       </div>
-      {isDesktop && <div className="flex justify-between mt-3 w-full p-3 items-center rounded-lg border max-md:flex-col max-md:space-y-1.5">
+      {isDesktop && <div className="flex justify-between mt-3 w-full p-3 items-center md:rounded-lg border max-md:space-y-1.5">
       <p>Fullscreen</p>
       <Switch
         className="cursor-pointer"
