@@ -137,16 +137,16 @@ export function SettingsMenu() {
       </DrawerTrigger>
       <DrawerContent>
         <div className="h-dvh overflow-auto flex flex-col">
-          <Button size="icon-sm"
-            className="w-6 h-6 absolute top-10 right-5 cursor-pointer"
 
+          <DrawerHeader className="text-left flex w-full justify-between">
+            <DrawerTitle className="text-center">Preferences</DrawerTitle>
+            <Button size="icon-sm"
+            className="w-6 h-6"
           >
           <X
             onClick={() => setOpen(false)}
           />
           </Button>
-          <DrawerHeader className="text-left">
-            <DrawerTitle className="text-center">Preferences</DrawerTitle>
           </DrawerHeader>
           <SettingsForm />
           <DrawerFooter>
