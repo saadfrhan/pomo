@@ -43,7 +43,7 @@ function SettingsForm() {
   const [longBreakIntervl, setLongBreakIntervl] =
     React.useState(longBreakInterval);
   return (
-    <div className="space-y-3 py-2 h-full">
+    <div className="space-y-3 py-2">
       <div className="space-y-2">
         <CardHeader className="md:p-0 p-3">
           <CardTitle>Session Length</CardTitle>
@@ -59,10 +59,12 @@ function SettingsForm() {
               max={60}
               className=" max-md:rounded-none rounded-t-lg border-t border"
               id="focus"
-              defaultValue={focusMinutes}
+              defaultValue={focus}
               onChange={(val) => {
+                console.log(val)
+
                 setFocus(val);
-                adjustFocusMinutes(focus);
+                adjustFocusMinutes(val);
               }}
             />
             <SettingsInput
@@ -70,10 +72,12 @@ function SettingsForm() {
               max={15}
               className=" max-md:rounded-none border-x border-b"
               id="short-break"
-              defaultValue={shortBreakMinutes}
+              defaultValue={shortBreak}
               onChange={(val) => {
+                console.log(val)
+
                 setShortBreak(val);
-                adjustShortBreakMinutes(shortBreak);
+                adjustShortBreakMinutes(val);
               }}
             />
             <SettingsInput
@@ -81,22 +85,25 @@ function SettingsForm() {
               max={60}
               className=" max-md:rounded-none rounded-b-lg border-x border-b"
               id="long-break"
-              defaultValue={longBreakMinutes}
+              defaultValue={longBreak}
               onChange={(val) => {
+                console.log(val)
                 setLongBreak(val);
-                adjustLongBreakMinutes(longBreak);
+                adjustLongBreakMinutes(val);
               }}
             />
           </div>
           <SettingsInput
             label="Sessions Until Long Break"
             max={8}
-            className="max-md:rounded-none border-x border-b rounded-md"
+            className="max-md:rounded-none border rounded-md"
             id="long-break-interval"
-            defaultValue={longBreakInterval}
+            defaultValue={longBreakIntervl}
             onChange={(val) => {
+              console.log(val)
+
               setLongBreakIntervl(val);
-              adjustLongBreakInterval(longBreakIntervl);
+              adjustLongBreakInterval(val);
             }}
           />
           <OtherSettings />
@@ -136,20 +143,17 @@ export function SettingsMenu() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="h-screen overflow-auto flex flex-col">
+        <div className="h-[94vh] overflow-auto flex flex-col">
 
-          <DrawerHeader className="text-left flex w-full justify-between">
+          <DrawerHeader className="text-left relative flex w-full justify-between">
             <DrawerTitle className="text-center">Preferences</DrawerTitle>
-            <Button size="icon-sm"
-            className="w-6 h-6"
-          >
           <X
             onClick={() => setOpen(false)}
+            className="w-10 h-10 absolute right-3 top-3"
           />
-          </Button>
           </DrawerHeader>
           <SettingsForm />
-          <DrawerFooter className="px-1 pb-1 pt-5">
+          <DrawerFooter className="p-0">
             <DrawerClose asChild>
               <Button variant="ghost">Close</Button>
             </DrawerClose>
@@ -186,11 +190,16 @@ function SettingsInput({
       <div className="flex max-md:w-full">
         <Input
           max={max}
-          className="h-8 text-base max-md:w-full border-border w-max rounded-r-none"
+          className="h-8 text-base max-md:w-full border-border w-max focus-visible:ring-0 focus-visible:ring-offset-0 rounded-r-none"
           id={id}
           value={defaultValue}
           onChange={(e) => {
-            onChange(Number(e.target.value));
+            const val = Number(e.target.value)
+            if (val > max) {
+              onChange(max)
+            } else {
+              onChange(val)
+            }
           }}
         />
         <Button
