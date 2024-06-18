@@ -26,7 +26,7 @@ export default function Timer() {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "F11") {
         event.preventDefault(); // Prevent the default F11 behavior
         if (document.fullscreenElement) {
