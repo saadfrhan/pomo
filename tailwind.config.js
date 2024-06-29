@@ -51,6 +51,51 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        focus: {
+          DEFAULT: "hsl(var(--focus))",
+        },
+        "short-break": {
+          DEFAULT: "hsl(var(--short-break))",
+        },
+        "long-break": {
+          DEFAULT: "hsl(var(--long-break))",
+        },
+        "focus-foreground": {
+          DEFAULT: "hsl(var(--focus-foreground))",
+        },
+        "short-break-foreground": {
+          DEFAULT: "hsl(var(--short-break-foreground))",
+        },
+        "long-break-foreground": {
+          DEFAULT: "hsl(var(--long-break-foreground))",
+        },
+        "focus-primary": {
+          DEFAULT: "hsl(var(--focus-primary))",
+        },
+        "short-break-primary": {
+          DEFAULT: "hsl(var(--short-break-primary))",
+        },
+        "long-break-primary": {
+          DEFAULT: "hsl(var(--long-break-primary))",
+        },
+        "focus-secondary": {
+          DEFAULT: "hsl(var(--focus-secondary))",
+        },
+        "short-break-secondary": {
+          DEFAULT: "hsl(var(--short-break-secondary))",
+        },
+        "long-break-secondary": {
+          DEFAULT: "hsl(var(--long-break-secondary))",
+        },
+        "checkbox-focus-off": {
+          DEFAULT: "hsl(var(--checkbox-focus-off))",
+        },
+        "checkbox-short-break-off": {
+          DEFAULT: "hsl(var(--checkbox-short-break-off))",
+        },
+        "checkbox-long-break-off": {
+          DEFAULT: "hsl(var(--checkbox-long-break-off))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

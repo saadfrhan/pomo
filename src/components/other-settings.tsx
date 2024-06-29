@@ -3,15 +3,26 @@ import { Switch } from "./ui/switch";
 import { useTimer } from "@/store";
 import { useMediaQuery } from "usehooks-ts";
 import { Checkbox } from "./ui/checkbox";
+import { cn } from "@/lib/utils";
 
-export default function OtherSettings() {
+export default function OtherSettings({ status }: { status: string }) {
   const { setTheme, theme } = useTheme();
-  const {playTick,isPlayTick,focusMode,isFocusMode, showProgressbar, isShowProgressbar, isFullscreen, autoresume,isAutoresume} = useTimer((state) => state);
+  const {
+    playTick,
+    isPlayTick,
+    focusMode,
+    isFocusMode,
+    showProgressbar,
+    isShowProgressbar,
+    isFullscreen,
+    autoresume,
+    isAutoresume,
+    extraBoldTime,
+    isExtraBoldTime,
+  } = useTimer((state) => state);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   // is user presses f11
-
-
 
   const handleEnterFullscreen = () => {
     const element = document.documentElement;
@@ -19,7 +30,7 @@ export default function OtherSettings() {
       element.requestFullscreen();
       isFullscreen(true);
     } else {
-      console.log('An error occurred');
+      console.log("An error occurred");
     }
   };
 
@@ -32,60 +43,140 @@ export default function OtherSettings() {
 
   return (
     <div>
-      <div className="flex justify-between  w-full p-3 items-center md:rounded-t-lg border max-md:space-y-1.5">
-      <p>Dark mode</p>
-      <Switch
-        className="cursor-pointer"
-        checked={theme === "dark"}
-        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
-      />
-    </div>
-    <div className="flex justify-between  w-full p-3 items-center border-b border-x max-md:space-y-1.5">
-      <p>Play ticking sound</p>
-      <Switch
-        className="cursor-pointer"
-        checked={playTick}
-        onCheckedChange={() => isPlayTick(!playTick)}
-      />
-    </div>
-    <div className="flex justify-between  w-full p-3 items-center border-b border-x max-md:space-y-1.5">
-      <p>Show progressbar</p>
-      <Switch
-        className="cursor-pointer"
-        checked={showProgressbar}
-        onCheckedChange={() => isShowProgressbar(!showProgressbar)}
-      />
-    </div>
-    <div className="flex justify-between  w-full p-3 items-center md:rounded-b-lg border-x border-b max-md:space-y-1.5">
-      <p>Focus mode</p>
-      <Switch
-        className="cursor-pointer"
-        checked={focusMode}
-        onCheckedChange={() => isFocusMode(!focusMode)}
-      />
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
+        <p>Dark mode</p>
+        <Switch
+          className={cn("cursor-pointer", {
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
+              status === "shortBreak",
+            "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
+              status === "longBreak",
+          })}
+          thumbClassName={cn({
+            "bg-focus": status === "focus",
+            "bg-short-break": status === "shortBreak",
+            "bg-long-break": status === "longBreak",
+          })}
+          checked={theme === "dark"}
+          onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+        />
       </div>
-      <div className="flex justify-between  w-full p-3 items-center md:rounded-b-lg border-x border-b max-md:space-y-1.5">
-      <p>Autoresume</p>
-      <Switch
-        className="cursor-pointer"
-        checked={autoresume}
-        onCheckedChange={() => isAutoresume(!autoresume)}
-      />
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
+        <p>Play ticking sound</p>
+        <Switch
+          className={cn("cursor-pointer", {
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
+              status === "shortBreak",
+            "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
+              status === "longBreak",
+          })}
+          thumbClassName={cn({
+            "bg-focus": status === "focus",
+            "bg-short-break": status === "shortBreak",
+            "bg-long-break": status === "longBreak",
+          })}
+          checked={playTick}
+          onCheckedChange={() => isPlayTick(!playTick)}
+        />
       </div>
-      {isDesktop && <div className="flex justify-between mt-3 w-full p-3 items-center md:rounded-lg border max-md:space-y-1.5">
-      <p>Fullscreen</p>
-      <Checkbox
-        className="cursor-pointer"
-        checked={
-          document.fullscreenElement !== null
-        }
-        onCheckedChange={
-          document.fullscreenElement !== null
-            ? handleExitFullscreen
-            : handleEnterFullscreen
-        }
-      />
-      </div>}
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
+        <p>Show progressbar</p>
+        <Switch
+          className={cn("cursor-pointer", {
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
+              status === "shortBreak",
+            "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
+              status === "longBreak",
+          })}
+          thumbClassName={cn({
+            "bg-focus": status === "focus",
+            "bg-short-break": status === "shortBreak",
+            "bg-long-break": status === "longBreak",
+          })}
+          checked={showProgressbar}
+          onCheckedChange={() => isShowProgressbar(!showProgressbar)}
+        />
+      </div>
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
+        <p>Focus mode</p>
+        <Switch
+          className={cn("cursor-pointer", {
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
+              status === "shortBreak",
+            "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
+              status === "longBreak",
+          })}
+          thumbClassName={cn({
+            "bg-focus": status === "focus",
+            "bg-short-break": status === "shortBreak",
+            "bg-long-break": status === "longBreak",
+          })}
+          checked={focusMode}
+          onCheckedChange={() => isFocusMode(!focusMode)}
+        />
+      </div>
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
+        <p>Extrabold time weight</p>
+        <Switch
+          className={cn("cursor-pointer", {
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
+              status === "shortBreak",
+            "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
+              status === "longBreak",
+          })}
+          thumbClassName={cn({
+            "bg-focus": status === "focus",
+            "bg-short-break": status === "shortBreak",
+            "bg-long-break": status === "longBreak",
+          })}
+          checked={extraBoldTime}
+          onCheckedChange={() => isExtraBoldTime(!extraBoldTime)}
+        />
+      </div>
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
+        <p>Autoresume</p>
+        <Switch
+          className={cn("cursor-pointer", {
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
+              status === "shortBreak",
+            "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
+              status === "longBreak",
+          })}
+          thumbClassName={cn({
+            "bg-focus": status === "focus",
+            "bg-short-break": status === "shortBreak",
+            "bg-long-break": status === "longBreak",
+          })}
+          checked={autoresume}
+          onCheckedChange={() => isAutoresume(!autoresume)}
+        />
+      </div>
+      {isDesktop && (
+        <div className="flex justify-between w-full pb-3 items-center max-md:space-y-1.5">
+          <p>Fullscreen</p>
+          <Checkbox
+            className={cn("cursor-pointer data-[state=checked]:border-none", {
+              "data-[state=checked]:bg-focus-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-focus-off": status === "focus",
+              "data-[state=checked]:bg-short-break-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-short-break-off":
+                status === "shortBreak",
+              "data-[state=checked]:bg-long-break-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-long-break-off":
+                status === "longBreak",
+            })}
+            checked={document.fullscreenElement !== null}
+            onCheckedChange={
+              document.fullscreenElement !== null
+                ? handleExitFullscreen
+                : handleEnterFullscreen
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }

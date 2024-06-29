@@ -3,20 +3,10 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "usehooks-ts";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Icon } from "@iconify/react";
@@ -26,7 +16,7 @@ import { CardDescription, CardHeader, CardTitle } from "./ui/card";
 import OtherSettings from "./other-settings";
 import { Input } from "./ui/input";
 
-function SettingsForm() {
+function SettingsForm({ status }: { status: string }) {
   const {
     adjustFocusMinutes,
     adjustLongBreakInterval,
@@ -43,26 +33,28 @@ function SettingsForm() {
   const [longBreakIntervl, setLongBreakIntervl] =
     React.useState(longBreakInterval);
   return (
-    <div className="space-y-3 py-2">
+    <div
+      className={cn("space-y-3 py-2", {
+        "text-focus-foreground": status === "focus",
+        "text-short-break-foreground": status === "shortBreak",
+        "text-long-break-foreground": status === "longBreak",
+      })}
+    >
       <div className="space-y-2">
         <CardHeader className="md:p-0 p-3">
-          <CardTitle>Session Length</CardTitle>
+          <CardTitle>Settings</CardTitle>
           <CardDescription>
-            The length of each session type in minutes. Changes apply to the
-            next session of each type.
+            Length change applies at next session
           </CardDescription>
         </CardHeader>
-        <div className="md:space-y-4">
-          <div>
+            <div className="max-md:px-3 space-y-2">
             <SettingsInput
               label="Focus Length"
               max={60}
-              className=" max-md:rounded-none rounded-t-lg border-t border"
+              status={status}
               id="focus"
               defaultValue={focus}
               onChange={(val) => {
-                console.log(val)
-
                 setFocus(val);
                 adjustFocusMinutes(val);
               }}
@@ -70,12 +62,10 @@ function SettingsForm() {
             <SettingsInput
               label="Short Break Length"
               max={15}
-              className=" max-md:rounded-none border-x border-b"
+              status={status}
               id="short-break"
               defaultValue={shortBreak}
               onChange={(val) => {
-                console.log(val)
-
                 setShortBreak(val);
                 adjustShortBreakMinutes(val);
               }}
@@ -83,37 +73,33 @@ function SettingsForm() {
             <SettingsInput
               label="Long Break Length"
               max={60}
-              className=" max-md:rounded-none rounded-b-lg border-x border-b"
               id="long-break"
+              status={status}
               defaultValue={longBreak}
               onChange={(val) => {
-                console.log(val)
                 setLongBreak(val);
                 adjustLongBreakMinutes(val);
               }}
             />
-          </div>
           <SettingsInput
             label="Sessions Until Long Break"
             max={8}
-            className="max-md:rounded-none border rounded-md"
             id="long-break-interval"
+            status={status}
             defaultValue={longBreakIntervl}
             onChange={(val) => {
-              console.log(val)
-
               setLongBreakIntervl(val);
               adjustLongBreakInterval(val);
             }}
           />
-          <OtherSettings />
-        </div>
+          <OtherSettings status={status} />
+            </div>
       </div>
     </div>
   );
 }
 
-export function SettingsMenu() {
+export function SettingsMenu({ status }: { status: string }) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -121,15 +107,34 @@ export function SettingsMenu() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="w-12 h-12 rounded-xl transition-colors duration-300">
-            <Icon icon="bi:three-dots" className="w-4 h-4" />
-          </Button>
+        <Button
+          className={cn("w-12 h-12 rounded-xl transition-colors duration-300", {
+            "bg-focus-secondary hover:bg-focus-secondary/90":
+              status === "focus",
+            "bg-short-break-secondary hover:bg-short-break-secondary/90":
+              status === "shortBreak",
+            "bg-long-break-secondary hover:bg-long-break-secondary/90":
+              status === "longBreak",
+          })}
+        >
+          <Icon
+            icon="bi:three-dots"
+            className={cn("w-4 h-4", {
+              "text-focus-foreground": status === "focus",
+              "text-short-break-foreground": status === "shortBreak",
+              "text-long-break-foreground": status === "longBreak",
+            })}
+          />
+        </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[575px]">
-          <DialogHeader>
-            <DialogTitle className="text-center">Preferences</DialogTitle>
-          </DialogHeader>
-          <SettingsForm />
+        <DialogContent
+          className={cn("sm:max-w-[575px]", {
+            "bg-focus": status === "focus",
+            "bg-short-break": status === "shortBreak",
+            "bg-long-break": status === "longBreak",
+          })}
+        >
+          <SettingsForm status={status} />
         </DialogContent>
       </Dialog>
     );
@@ -138,26 +143,54 @@ export function SettingsMenu() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="w-12 h-12 rounded-xl transition-colors duration-300">
-          <Icon icon="bi:three-dots" className="w-4 h-4" />
+        <Button
+          className={cn("w-12 h-12 rounded-xl transition-colors duration-300", {
+            "bg-focus-secondary hover:bg-focus-secondary/90":
+              status === "focus",
+            "bg-short-break-secondary hover:bg-short-break-secondary/90":
+              status === "shortBreak",
+            "bg-long-break-secondary hover:bg-long-break-secondary/90":
+              status === "longBreak",
+          })}
+        >
+          <Icon
+            icon="bi:three-dots"
+            className={cn("w-4 h-4", {
+              "text-focus-foreground": status === "focus",
+              "text-short-break-foreground": status === "shortBreak",
+              "text-long-break-foreground": status === "longBreak",
+            })}
+          />
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
-        <div className="h-[94vh] overflow-auto flex flex-col">
-
-          <DrawerHeader className="text-left relative flex w-full justify-between">
-            <DrawerTitle className="text-center">Preferences</DrawerTitle>
-          <X
-            onClick={() => setOpen(false)}
-            className="w-10 h-10 absolute right-3 top-3"
-          />
-          </DrawerHeader>
-          <SettingsForm />
-          <DrawerFooter className="p-0">
-            <DrawerClose asChild>
-              <Button variant="ghost">Close</Button>
-            </DrawerClose>
-          </DrawerFooter>
+      <DrawerContent
+        className={cn("border-none", {
+          "bg-focus": status === "focus",
+          "bg-short-break": status === "shortBreak",
+          "bg-long-break": status === "longBreak",
+        })}
+      >
+        <div className="h-[90vh] overflow-auto flex flex-col">
+          <div
+            className={cn(
+              "rounded-md w-8 h-8 flex items-center justify-center cursor-pointer absolute right-3 top-3",
+              {
+                "bg-focus-secondary": status === "focus",
+                "bg-short-secondary": status === "shortBreak",
+                "bg-long-secondary": status === "longBreak",
+              }
+            )}
+          >
+            <X
+              onClick={() => setOpen(false)}
+              className={cn("w-5 h-5", {
+                "text-focus-foreground": status === "focus",
+                "text-short-break-foreground": status === "shortBreak",
+                "text-long-break-foreground": status === "longBreak",
+              })}
+            />
+          </div>
+          <SettingsForm status={status} />
         </div>
       </DrawerContent>
     </Drawer>
@@ -171,6 +204,7 @@ function SettingsInput({
   onChange,
   className,
   max,
+  status,
 }: {
   label: string;
   id: string;
@@ -178,11 +212,12 @@ function SettingsInput({
   onChange: (val: number) => void;
   className?: string;
   max: number;
+  status: string;
 }) {
   return (
     <div
       className={cn(
-        "flex md:justify-between justify-center md:items-center w-full p-3 max-md:flex-col max-md:space-y-1.5",
+        "flex md:justify-between justify-center md:items-center w-full max-md:flex-col max-md:space-y-1.5",
         className
       )}
     >
@@ -194,17 +229,22 @@ function SettingsInput({
           id={id}
           value={defaultValue}
           onChange={(e) => {
-            const val = Number(e.target.value)
+            const val = Number(e.target.value);
             if (val > max) {
-              onChange(max)
+              onChange(max);
             } else {
-              onChange(val)
+              onChange(val);
             }
           }}
         />
         <Button
           size="icon-sm"
-          className="rounded-none"
+          className={cn("rounded-none border-x-[0px]", {
+            "text-focus-foreground hover:bg-focus-primary/90": status === "focus",
+            "text-short-break-foreground hover:bg-short-break-primary/90": status === "shortBreak",
+            "text-long-break-foreground hover:bg-long-break-primary/90": status === "longBreak",
+          })}
+          variant="outline"
           disabled={defaultValue >= max}
           onClick={() => {
             onChange(defaultValue + 1);
@@ -214,7 +254,12 @@ function SettingsInput({
         </Button>
         <Button
           size="icon-sm"
-          className="rounded-l-none"
+          className={cn("rounded-l-none", {
+            "text-focus-foreground hover:bg-focus-primary/90": status === "focus",
+            "text-short-break-foreground hover:bg-short-break-primary/90": status === "shortBreak",
+            "text-long-break-foreground hover:bg-long-break-primary/90": status === "longBreak",
+          })}
+          variant="outline"
           disabled={defaultValue <= 1}
           onClick={() => {
             onChange(defaultValue - 1);
