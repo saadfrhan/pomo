@@ -4,7 +4,6 @@ import { Icon } from "@iconify/react";
 import StatusBadge from "./components/status-badge";
 import { cn } from "@/lib/utils";
 import { SettingsMenu } from "./components/settings-menu";
-import { Helmet } from "react-helmet-async";
 import { RotateCcwIcon } from "lucide-react";
 import { useTimer } from "@/store";
 import tickSound from "./tick.mp3";
@@ -75,6 +74,26 @@ export default function Timer() {
   const [status, setStatus] = useState("focus");
 
   const endAlarm = new Audio(endSound)
+
+  useEffect(() => {
+    const updateTitle = () => {
+      document.title = `${pad(minutes)}:${pad(seconds)} - ${status === 'focus' ? 'Time to focus!' : 'Time for a break!'}`;
+    };
+
+    updateTitle();
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        updateTitle();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [minutes, seconds, status]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -180,12 +199,6 @@ export default function Timer() {
         "bg-long-break": status === "longBreak",
       })}
     >
- <Helmet>
-        <title>
-          {pad(minutes)}:{pad(seconds)} -{" "}
-          {status === "focus" ? "Time to focus!" : "Time for a break!"}
-        </title>
-      </Helmet>
       {/* progress bar of timer from start till end */}
       {showProgressbar &&<div className="relative w-full h-1 bg-secondary rounded-full md:mb-6">
         <div
