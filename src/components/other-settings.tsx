@@ -43,7 +43,7 @@ export default function OtherSettings({ status }: { status: string }) {
 
   return (
     <div>
-      <div className="flex justify-between  w-full p-3 items-center md:rounded-t-md md:border max-md:space-y-1.5">
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
         <p>Dark mode</p>
         <Switch
           className={cn("cursor-pointer", {
@@ -62,7 +62,7 @@ export default function OtherSettings({ status }: { status: string }) {
           onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         />
       </div>
-      <div className="flex justify-between  w-full p-3 items-center md:border-b md:border-x max-md:space-y-1.5">
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
         <p>Play ticking sound</p>
         <Switch
           className={cn("cursor-pointer", {
@@ -81,7 +81,7 @@ export default function OtherSettings({ status }: { status: string }) {
           onCheckedChange={() => isPlayTick(!playTick)}
         />
       </div>
-      <div className="flex justify-between  w-full p-3 items-center md:border-b md:border-x max-md:space-y-1.5">
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
         <p>Show progressbar</p>
         <Switch
           className={cn("cursor-pointer", {
@@ -100,7 +100,7 @@ export default function OtherSettings({ status }: { status: string }) {
           onCheckedChange={() => isShowProgressbar(!showProgressbar)}
         />
       </div>
-      <div className="flex justify-between  w-full p-3 items-center md:rounded-b-md md:border-x md:border-b max-md:space-y-1.5">
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
         <p>Focus mode</p>
         <Switch
           className={cn("cursor-pointer", {
@@ -119,7 +119,7 @@ export default function OtherSettings({ status }: { status: string }) {
           onCheckedChange={() => isFocusMode(!focusMode)}
         />
       </div>
-      <div className="flex justify-between  w-full p-3 items-center md:rounded-b-md md:border-x md:border-b max-md:space-y-1.5">
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
         <p>Extrabold time weight</p>
         <Switch
           className={cn("cursor-pointer", {
@@ -138,7 +138,7 @@ export default function OtherSettings({ status }: { status: string }) {
           onCheckedChange={() => isExtraBoldTime(!extraBoldTime)}
         />
       </div>
-      <div className="flex justify-between  w-full p-3 items-center md:rounded-b-md md:border-x md:border-b max-md:space-y-1.5">
+      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
         <p>Autoresume</p>
         <Switch
           className={cn("cursor-pointer", {
@@ -158,14 +158,14 @@ export default function OtherSettings({ status }: { status: string }) {
         />
       </div>
       {isDesktop && (
-        <div className="flex justify-between mt-3 w-full p-3 items-center md:rounded-md md:border max-md:space-y-1.5">
+        <div className="flex justify-between w-full pb-3 items-center max-md:space-y-1.5">
           <p>Fullscreen</p>
           <Checkbox
-            className={cn("cursor-pointer", {
-              "data-[state=checked]:bg-focus-primary": status === "focus",
-              "data-[state=checked]:bg-short-break-primary":
+            className={cn("cursor-pointer data-[state=checked]:border-none", {
+              "data-[state=checked]:bg-focus-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-focus-off": status === "focus",
+              "data-[state=checked]:bg-short-break-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-short-break-off":
                 status === "shortBreak",
-              "data-[state=checked]:bg-long-break-primary":
+              "data-[state=checked]:bg-long-break-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-long-break-off":
                 status === "longBreak",
             })}
             checked={document.fullscreenElement !== null}
