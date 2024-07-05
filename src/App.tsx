@@ -140,7 +140,7 @@ export default function Timer() {
       } else {
         setSeconds((seconds) => seconds - 1);
       }
-    }, 200);
+    }, 1000);
 
     return () => clearInterval(intervalId);
   }, [
