@@ -95,6 +95,8 @@ export default function Timer() {
     };
   }, [minutes, seconds, status]);
 
+  const tickAudio = new Audio(tickSound);
+  const tickAudioRef = useRef(tickAudio);
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (stop) {
@@ -106,48 +108,39 @@ export default function Timer() {
       }
       if (seconds === 0) {
         if (minutes === 0) {
-          if (shortBreakMinutes === 0) {
-            return;
-          }
+          // Adjusting the logic for status update
           const newIntervals = intervals + 1;
-          setIntervals(newIntervals);
           if (newIntervals % longBreakInterval === 0) {
             setMinutes(longBreakMinutes);
-            setSeconds(0);
             setStatus("longBreak");
-            if (!autoresume) {
-              setStop(true);
-              endAlarm.play();
-              // stop endAlarm after 10 seconds
-            }
-            return;
-          } else {
+          } else if (status === 'focus') {
             setMinutes(shortBreakMinutes);
-            setSeconds(0);
             setStatus("shortBreak");
-            if (!autoresume) {
-              setStop(true);
-              const endAlarm = new Audio(endSound);
-              endAlarm.play();
+          } else {
+            setMinutes(focusMinutes); // Assuming focusMinutes is defined elsewhere
+            setStatus("focus");
+            setIntervals(newIntervals);
+          }
+          setSeconds(0);
+          if (!autoresume) {
+            setStop(true);
+            const endAlarm = new Audio(endSound);
+            endAlarm.play();
+            setTimeout(() => {
               if (!stop) {
-                setTimeout(() => {
-                  endAlarm.pause();
-                  endAlarm.currentTime = 0;
-                }, 10000);
-              } else {
                 endAlarm.pause();
                 endAlarm.currentTime = 0;
               }
-            }
-            return;
+            }, 10000);
           }
+          return;
         }
         setMinutes((minutes) => minutes - 1);
         setSeconds(59);
       } else {
         setSeconds((seconds) => seconds - 1);
       }
-    }, 1000);
+    }, 200);
 
     return () => clearInterval(intervalId);
   }, [
@@ -158,6 +151,11 @@ export default function Timer() {
     intervals,
     longBreakInterval,
     longBreakMinutes,
+    status, // Ensure status is a dependency
+    autoresume,
+    playTick,
+    tickAudioRef,
+    endSound // Assuming endSound is defined elsewhere
   ]);
 
   function handleReset() {
@@ -168,9 +166,7 @@ export default function Timer() {
     setStop(true);
   }
 
-  const tickAudio = new Audio(tickSound);
   const startAudio = new Audio(startSound);
-  const tickAudioRef = useRef(tickAudio);
 
   const time: {
     [x: string]: number;

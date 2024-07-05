@@ -25,9 +25,9 @@ interface TimerState {
 
 export const useTimer = create<TimerState>((set) => ({
   showProgressbar: true,
-  focusMinutes: 25,
-  shortBreakMinutes: 5,
-  longBreakMinutes: 15,
+  focusMinutes: 1,
+  shortBreakMinutes: 1,
+  longBreakMinutes: 1,
   longBreakInterval: 4,
   playTick: false,
   focusMode: false,
