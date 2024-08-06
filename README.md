@@ -69,5 +69,3 @@
 
 2. **Task Batching**
    - Group similar tasks to minimize context switching.
-
-By following these steps, the app can be developed iteratively, ensuring that core functionality is solid before adding additional features and enhancements.
