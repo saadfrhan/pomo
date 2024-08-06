@@ -1,7 +1,5 @@
 # Roadmap
 
-Certainly! Here’s a breakdown of the features into a series of development steps:
-
 ### Phase 1: Core Functionality
 - [x] ~**Pomodoro Technique**~
 - [x] ~**Basic Timer**~ 
