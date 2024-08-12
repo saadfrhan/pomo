@@ -1,21 +1,26 @@
 import { Icon } from "@iconify/react";
 import { Badge } from "./ui/badge";
+import { useTimer } from "@/store";
 
-export default function StatusBadge({ status, lap = 1 }: { status: string, lap: number }) {
+export default function StatusBadge({ lap = 1 }: { lap: number }) {
+  const { status } = useTimer((state) => state);
   if (status === "focus") {
     return focus(lap);
   }
   if (status === "shortBreak") {
-    return shortBreak
+    return shortBreak;
   }
   if (status === "longBreak") {
-    return longBreak
+    return longBreak;
   }
   return null;
 }
 
-const focus = ( lap = 1) => (
-  <Badge variant="outline" className="flex gap-1 items-center text-base w-fit border-focus-foreground font-medium bg-focus-secondary text-focus-foreground">
+const focus = (lap = 1) => (
+  <Badge
+    variant="outline"
+    className="flex gap-1 items-center text-base w-fit border-focus-foreground font-medium bg-focus-secondary text-focus-foreground"
+  >
     <Icon icon="ph:brain" className="w-5 h-5" />
     Focus #{lap}
   </Badge>
