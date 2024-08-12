@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import { Icon } from "@iconify/react";
 import StatusBadge from "./components/status-badge";
@@ -6,8 +6,6 @@ import { cn } from "@/lib/utils";
 import { SettingsMenu } from "./components/settings-menu";
 import { RotateCcwIcon } from "lucide-react";
 import { useTimer } from "@/store";
-import tickSound from "./tick.mp3";
-import startSound from "./start.mp3";
 import endSound from "./end-alarm.mp3";
 
 export default function Timer() {
@@ -16,13 +14,12 @@ export default function Timer() {
     longBreakInterval,
     longBreakMinutes,
     shortBreakMinutes,
-    playTick,
     focusMode,
     fullscreen,
     isFullscreen,
     autoresume,
     extraBoldTime,
-    showProgressbar
+    showProgressbar,
   } = useTimer((state) => state);
 
   useEffect(() => {
@@ -73,11 +70,11 @@ export default function Timer() {
   const [stop, setStop] = useState(true);
   const [status, setStatus] = useState("focus");
 
-  const endAlarm = new Audio(endSound)
+  const endAlarm = new Audio(endSound);
 
   useEffect(() => {
     const updateTitle = () => {
-      document.title = `${pad(minutes)}:${pad(seconds)} - ${status === 'focus' ? 'Time to focus!' : 'Time for a break!'}`;
+      document.title = `${pad(minutes)}:${pad(seconds)} - ${status === "focus" ? "Time to focus!" : "Time for a break!"}`;
     };
 
     updateTitle();
@@ -88,23 +85,18 @@ export default function Timer() {
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [minutes, seconds, status]);
 
-  const tickAudio = new Audio(tickSound);
-  const tickAudioRef = useRef(tickAudio);
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (stop) {
         clearInterval(intervalId);
         return;
-      }
-      if (playTick) {
-        tickAudioRef.current.play();
       }
       if (seconds === 0) {
         if (minutes === 0) {
@@ -113,7 +105,7 @@ export default function Timer() {
           if (newIntervals % longBreakInterval === 0) {
             setMinutes(longBreakMinutes);
             setStatus("longBreak");
-          } else if (status === 'focus') {
+          } else if (status === "focus") {
             setMinutes(shortBreakMinutes);
             setStatus("shortBreak");
           } else {
@@ -153,9 +145,7 @@ export default function Timer() {
     longBreakMinutes,
     status, // Ensure status is a dependency
     autoresume,
-    playTick,
-    tickAudioRef,
-    endSound // Assuming endSound is defined elsewhere
+    endSound, // Assuming endSound is defined elsewhere
   ]);
 
   function handleReset() {
@@ -166,8 +156,6 @@ export default function Timer() {
     setStop(true);
   }
 
-  const startAudio = new Audio(startSound);
-
   const time: {
     [x: string]: number;
   } = {
@@ -175,15 +163,6 @@ export default function Timer() {
     shortBreak: shortBreakMinutes,
     longBreak: longBreakMinutes,
   };
-
-  console.log(
-    {
-      // "bg-[#000]": focusMode && !stop,
-      "bg-focus/15": status === "focus",
-      "bg-short-break/15": status === "shortBreak",
-      "bg-long-break/15": status === "longBreak",
-    }
-  )
 
   return (
     <div
@@ -196,32 +175,38 @@ export default function Timer() {
       })}
     >
       {/* progress bar of timer from start till end */}
-      {showProgressbar &&<div className="relative w-full h-1 bg-secondary rounded-full md:mb-6">
-        <div
-          className={cn("absolute top-0 left-0 h-full rounded-full", {
-            "bg-focus-primary": status === "focus",
-            "bg-short-break-primary": status === "shortBreak",
-            "bg-long-break-primary": status === "longBreak",
-
-          })}
-          style={{
-            width: `${
-              ((time[status] * 60 - minutes * 60 - seconds) /
-                (time[status] * 60)) *
-              100
-            }%`,
-          }}
-        ></div>
-      </div>}
+      {showProgressbar && (
+        <div className="relative w-full h-1 bg-secondary rounded-full md:mb-6">
+          <div
+            className={cn("absolute top-0 left-0 h-full rounded-full", {
+              "bg-focus-primary": status === "focus",
+              "bg-short-break-primary": status === "shortBreak",
+              "bg-long-break-primary": status === "longBreak",
+            })}
+            style={{
+              width: `${
+                ((time[status] * 60 - minutes * 60 - seconds) /
+                  (time[status] * 60)) *
+                100
+              }%`,
+            }}
+          ></div>
+        </div>
+      )}
       <div className="flex flex-col w-full max-w-xl mx-auto gap-y-4">
         <div className="flex flex-col justify-center items-center h-[94dvh] gap-y-6">
           <StatusBadge status={status} lap={intervals + 1} />
-          <div className={cn("font-extralight flex flex-col items-center justify-center", {
-            "font-extrabold": extraBoldTime,
-            "text-focus-foreground": status === "focus",
-            "text-short-break-foreground": status === "shortBreak",
-            "text-long-break-foreground": status === "longBreak",
-          })}>
+          <div
+            className={cn(
+              "font-extralight flex flex-col items-center justify-center",
+              {
+                "font-extrabold": extraBoldTime,
+                "text-focus-foreground": status === "focus",
+                "text-short-break-foreground": status === "shortBreak",
+                "text-long-break-foreground": status === "longBreak",
+              },
+            )}
+          >
             <p className="text-[15rem] leading-[0.8]">{pad(minutes)}</p>
             <p className="text-[15rem] leading-[0.8]">{pad(seconds)}</p>
           </div>
@@ -232,10 +217,11 @@ export default function Timer() {
                 : "opacity-100"
             }`}
           >
-            {(!focusMode || (focusMode && stop)) && <SettingsMenu status={status} />}
+            {(!focusMode || (focusMode && stop)) && (
+              <SettingsMenu status={status} />
+            )}
             <Button
               onClick={() => {
-                startAudio.play();
                 setStop(!stop);
                 if (autoresume && !endAlarm.paused) {
                   endAlarm.pause();
@@ -245,30 +231,49 @@ export default function Timer() {
               size="icon"
               className={cn(
                 "w-20 h-16 rounded-3xl transition-colors duration-300",
-                {"bg-focus-primary hover:bg-focus-primary/90": status === "focus",
-                "bg-short-break-primary hover:bg-short-break-primary/90": status === "shortBreak",
-                "bg-long-break-primary hover:bg-long-break-primary/90": status === "longBreak",}
+                {
+                  "bg-focus-primary hover:bg-focus-primary/90":
+                    status === "focus",
+                  "bg-short-break-primary hover:bg-short-break-primary/90":
+                    status === "shortBreak",
+                  "bg-long-break-primary hover:bg-long-break-primary/90":
+                    status === "longBreak",
+                },
               )}
             >
               {stop ? (
-                <Icon icon="bi:play-fill" className={cn("w-8 h-8", {
-                  "text-focus-foreground": status === "focus",
-                  "text-short-break-foreground": status === "shortBreak",
-                  "text-long-break-foreground": status === "longBreak",
-                })} />
+                <Icon
+                  icon="bi:play-fill"
+                  className={cn("w-8 h-8", {
+                    "text-focus-foreground": status === "focus",
+                    "text-short-break-foreground": status === "shortBreak",
+                    "text-long-break-foreground": status === "longBreak",
+                  })}
+                />
               ) : (
-                <Icon icon="bi:pause-fill" className={cn("w-8 h-8", {
-                  "text-focus-foreground": status === "focus",
-                  "text-short-break-foreground": status === "shortBreak",
-                  "text-long-break-foreground": status === "longBreak",
-                })} />
+                <Icon
+                  icon="bi:pause-fill"
+                  className={cn("w-8 h-8", {
+                    "text-focus-foreground": status === "focus",
+                    "text-short-break-foreground": status === "shortBreak",
+                    "text-long-break-foreground": status === "longBreak",
+                  })}
+                />
               )}
             </Button>
             <Button
               size="icon"
-              className={cn("w-12 h-12 rounded-xl transition-colors duration-300", {"bg-focus-secondary hover:bg-focus-secondary/90": status === "focus",
-                "bg-short-break-secondary hover:bg-short-break-secondary/90": status === "shortBreak",
-                "bg-long-break-secondary hover:bg-long-break-secondary/90": status === "longBreak",})}
+              className={cn(
+                "w-12 h-12 rounded-xl transition-colors duration-300",
+                {
+                  "bg-focus-secondary hover:bg-focus-secondary/90":
+                    status === "focus",
+                  "bg-short-break-secondary hover:bg-short-break-secondary/90":
+                    status === "shortBreak",
+                  "bg-long-break-secondary hover:bg-long-break-secondary/90":
+                    status === "longBreak",
+                },
+              )}
               onClick={() => {
                 if (status === "longBreak") {
                   setMinutes(focusMinutes);
@@ -294,22 +299,28 @@ export default function Timer() {
                 }
               }}
             >
-              <Icon icon="bi:fast-forward-fill" className={cn("w-4 h-4", {
+              <Icon
+                icon="bi:fast-forward-fill"
+                className={cn("w-4 h-4", {
                   "text-focus-foreground": status === "focus",
                   "text-short-break-foreground": status === "shortBreak",
                   "text-long-break-foreground": status === "longBreak",
-                })} />
+                })}
+              />
             </Button>
             {(!focusMode || (focusMode && stop)) && (
               <Button
                 size="icon"
                 className={cn(
-                  "w-12 h-12 rounded-xl transition-colors duration-300", {
-                    "text-focus-foreground hover:bg-focus-secondary/90 bg-focus-secondary": status === "focus",
-                    "text-short-break-foreground hover:bg-short-break-secondary/90 bg-short-break-secondary": status === "shortBreak",
-                    "text-long-break-foreground hover:bg-long-break-secondary/90 bg-long-break-secondary": status === "longBreak",
-
-                  }
+                  "w-12 h-12 rounded-xl transition-colors duration-300",
+                  {
+                    "text-focus-foreground hover:bg-focus-secondary/90 bg-focus-secondary":
+                      status === "focus",
+                    "text-short-break-foreground hover:bg-short-break-secondary/90 bg-short-break-secondary":
+                      status === "shortBreak",
+                    "text-long-break-foreground hover:bg-long-break-secondary/90 bg-long-break-secondary":
+                      status === "longBreak",
+                  },
                 )}
                 onClick={handleReset}
               >

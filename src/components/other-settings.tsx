@@ -8,8 +8,6 @@ import { cn } from "@/lib/utils";
 export default function OtherSettings({ status }: { status: string }) {
   const { setTheme, theme } = useTheme();
   const {
-    playTick,
-    isPlayTick,
     focusMode,
     isFocusMode,
     showProgressbar,
@@ -47,7 +45,8 @@ export default function OtherSettings({ status }: { status: string }) {
         <p>Dark mode</p>
         <Switch
           className={cn("cursor-pointer", {
-            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off":
+              status === "focus",
             "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
               status === "shortBreak",
             "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
@@ -63,29 +62,11 @@ export default function OtherSettings({ status }: { status: string }) {
         />
       </div>
       <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
-        <p>Play ticking sound</p>
-        <Switch
-          className={cn("cursor-pointer", {
-            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
-            "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
-              status === "shortBreak",
-            "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
-              status === "longBreak",
-          })}
-          thumbClassName={cn({
-            "bg-focus": status === "focus",
-            "bg-short-break": status === "shortBreak",
-            "bg-long-break": status === "longBreak",
-          })}
-          checked={playTick}
-          onCheckedChange={() => isPlayTick(!playTick)}
-        />
-      </div>
-      <div className="flex justify-between  w-full pb-3 items-center max-md:space-y-1.5">
         <p>Show progressbar</p>
         <Switch
           className={cn("cursor-pointer", {
-            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off":
+              status === "focus",
             "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
               status === "shortBreak",
             "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
@@ -104,7 +85,8 @@ export default function OtherSettings({ status }: { status: string }) {
         <p>Focus mode</p>
         <Switch
           className={cn("cursor-pointer", {
-            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off":
+              status === "focus",
             "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
               status === "shortBreak",
             "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
@@ -123,7 +105,8 @@ export default function OtherSettings({ status }: { status: string }) {
         <p>Extrabold time weight</p>
         <Switch
           className={cn("cursor-pointer", {
-            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off":
+              status === "focus",
             "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
               status === "shortBreak",
             "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
@@ -142,7 +125,8 @@ export default function OtherSettings({ status }: { status: string }) {
         <p>Autoresume</p>
         <Switch
           className={cn("cursor-pointer", {
-            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off": status === "focus",
+            "data-[state=checked]:bg-focus-primary data-[state=unchecked]:bg-checkbox-focus-off":
+              status === "focus",
             "data-[state=checked]:bg-short-break-primary data-[state=unchecked]:bg-checkbox-short-break-off":
               status === "shortBreak",
             "data-[state=checked]:bg-long-break-primary data-[state=unchecked]:bg-checkbox-long-break-off":
@@ -162,7 +146,8 @@ export default function OtherSettings({ status }: { status: string }) {
           <p>Fullscreen</p>
           <Checkbox
             className={cn("cursor-pointer data-[state=checked]:border-none", {
-              "data-[state=checked]:bg-focus-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-focus-off": status === "focus",
+              "data-[state=checked]:bg-focus-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-focus-off":
+                status === "focus",
               "data-[state=checked]:bg-short-break-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-short-break-off":
                 status === "shortBreak",
               "data-[state=checked]:bg-long-break-primary data-[state=checked]:text-white data-[state=unchecked]:border-checkbox-long-break-off":
