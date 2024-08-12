@@ -19,6 +19,8 @@ interface TimerState {
   isShowProgressbar: (showProgressbar: boolean) => void;
   isAutoresume: (autoresume: boolean) => void;
   isExtraBoldTime: (extraBoldTime: boolean) => void;
+  status: string;
+  setStatus: (status: string) => void;
 }
 
 export const useTimer = create<TimerState>((set) => ({
@@ -40,4 +42,6 @@ export const useTimer = create<TimerState>((set) => ({
   isShowProgressbar: (showProgressbar) => set({ showProgressbar }),
   isAutoresume: (autoresume) => set({ autoresume }),
   isExtraBoldTime: (extraBoldTime) => set({ extraBoldTime }),
+  status: "focus",
+  setStatus: (status) => set({ status }),
 }));

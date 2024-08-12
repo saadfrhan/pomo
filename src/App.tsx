@@ -20,6 +20,8 @@ export default function Timer() {
     autoresume,
     extraBoldTime,
     showProgressbar,
+    status,
+    setStatus,
   } = useTimer((state) => state);
 
   useEffect(() => {
@@ -68,7 +70,6 @@ export default function Timer() {
   const [seconds, setSeconds] = useState(0);
   const [intervals, setIntervals] = useState(0);
   const [stop, setStop] = useState(true);
-  const [status, setStatus] = useState("focus");
 
   const endAlarm = new Audio(endSound);
 
@@ -195,7 +196,7 @@ export default function Timer() {
       )}
       <div className="flex flex-col w-full max-w-xl mx-auto gap-y-4">
         <div className="flex flex-col justify-center items-center h-[94dvh] gap-y-6">
-          <StatusBadge status={status} lap={intervals + 1} />
+          <StatusBadge lap={intervals + 1} />
           <div
             className={cn(
               "font-extralight flex flex-col items-center justify-center",
@@ -217,9 +218,7 @@ export default function Timer() {
                 : "opacity-100"
             }`}
           >
-            {(!focusMode || (focusMode && stop)) && (
-              <SettingsMenu status={status} />
-            )}
+            {(!focusMode || (focusMode && stop)) && <SettingsMenu />}
             <Button
               onClick={() => {
                 setStop(!stop);

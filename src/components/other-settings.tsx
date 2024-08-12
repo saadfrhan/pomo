@@ -5,7 +5,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { Checkbox } from "./ui/checkbox";
 import { cn } from "@/lib/utils";
 
-export default function OtherSettings({ status }: { status: string }) {
+export default function OtherSettings() {
   const { setTheme, theme } = useTheme();
   const {
     focusMode,
@@ -17,6 +17,7 @@ export default function OtherSettings({ status }: { status: string }) {
     isAutoresume,
     extraBoldTime,
     isExtraBoldTime,
+    status,
   } = useTimer((state) => state);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
