@@ -1,71 +1,36 @@
-# Roadmap
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-### Phase 1: Core Functionality
-- [x] ~**Pomodoro Technique**~
-- [x] ~**Basic Timer**~ 
-3. **Digital Aesthetic Clock**
-   - Minimalist design with different themes and color schemes.
+## Getting Started
 
-4. **User Profiles**
-   - Basic profile creation with username, profile picture, and bio.
+First, run the development server:
 
-### Phase 2: Additional Productivity Techniques
-1. **Flowmodoro**
-   - Customizable work and break durations.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-2. **52/17 Method**
-   - 52 minutes of work followed by 17 minutes of break.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-3. **90-Minute Work Block**
-   - 90 minutes of focused work followed by a 20-30 minute break.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-4. **Eisenhower Technique**
-   - Task categorization system.
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-5. **Time Blocking**
-   - Schedule blocks of time for different tasks.
+## Learn More
 
-### Phase 3: Extended Tools
-1. **Stopwatch**
-   - Simple stopwatch functionality.
+To learn more about Next.js, take a look at the following resources:
 
-2. **Customizable Timer**
-   - Allow users to set their own work and break intervals.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-### Phase 4: Statistics and Tracking
-1. **Daily, Weekly, and Monthly Stats**
-   - Overview of time spent on work sessions and breaks.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-2. **Detailed Analytics**
-   - Graphs and charts showing productivity trends.
-   - Insights into peak productivity times.
+## Deploy on Vercel
 
-3. **Task Completion Stats**
-   - Track the number of tasks completed in each session.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Phase 5: Gamification and Achievements
-1. **Achievements**
-   - Unlockable badges and rewards for reaching milestones.
-
-2. **Streaks**
-   - Track and reward consecutive days of productivity.
-
-3. **Levels and Experience Points**
-   - Earn points for completed work sessions and level up.
-
-### Phase 6: Advanced User Experience
-1. **Dark Mode and Light Mode**
-   - Option to switch between themes.
-
-2. **Notifications and Alerts**
-   - Reminders for work sessions, breaks, and other activities.
-
-3. **Sync Across Devices**
-   - Synchronize data and progress across multiple devices.
-
-### Phase 7: Optional Advanced Techniques
-1. **Bullet Journaling**
-   - Integration with digital bullet journaling methods.
-
-2. **Task Batching**
-   - Group similar tasks to minimize context switching.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
